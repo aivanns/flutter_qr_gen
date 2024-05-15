@@ -29,7 +29,8 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
             Container(
               padding: EdgeInsets.only(left: 25, right: 25),
               child: TextField(
-                decoration: primary_field
+                decoration: primary_field,
+                controller: qrdataFeed,
                 ),
             ),
             const SizedBox(height: 200),
@@ -38,16 +39,10 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
               decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(40)),
               child: TextButton(
                 onPressed: () async {
-                  if (qrdataFeed.text.isEmpty) {
-                    setState(() {
-                      qrData = '';
-                    });
-                  }
-                  else {
                     setState(() {
                       qrData = qrdataFeed.text;
+                      print('$qrData');
                     });
-                  }
                   }, 
                 child: Text('Generate QR', style: TextStyle(color: Colors.white, fontSize: 18)), ),
             ),

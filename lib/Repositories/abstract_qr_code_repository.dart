@@ -1,4 +1,4 @@
-import '../Models/qr_code.dart';
+import '../MainScreen/Models/qr_code.dart';
 
 abstract class AbstractQrCodeRepository {
   Future<QrCode> getQrCode();
