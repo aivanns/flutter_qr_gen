@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'dart:ffi';
-import 'dart:typed_data';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +5,6 @@ import 'package:flutter_qr_gen/Repositories/abstract_qr_code_repository.dart';
 import 'package:flutter_qr_gen/Repositories/qr_code_repository.dart';
 import 'package:flutter_qr_gen/Styles/field_styles.dart';
 import 'package:get_it/get_it.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 import 'bloc/qr_generator_bloc.dart';
 
@@ -26,57 +21,55 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
   final _qrCodeBloc = QrCodeBloc(GetIt.I<AbstractQrCodeRepository>());
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Center(child: Text('QR Code Generator')),
       ),
-      body: BlocBuilder<QrCodeBloc, QrCodeState>(
-        bloc: _qrCodeBloc,
-        builder: (context, state) {
-          return Container(
-            padding: const EdgeInsets.only(left: 20, right: 20),
+      body: Container(
+        padding: const EdgeInsets.only(right: 25, left: 25),
         child: Column(
           children: [
-            GetIt.I<AbstractQrCodeRepository>().qrData == '' && qrdataFeed.text.toString() == '' ? const SizedBox(height: 60) :
-            FutureBuilder(future: QrCodeRepository(dio: Dio()).getQrCode(),
-             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: const CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else if (snapshot.hasData) {
-              return Image.memory(snapshot.data!);
-            } else {
-              return Text('No data');
-            }
-             }),
-            //QrImageView(data: GetIt.I<AbstractQrCodeRepository>().qrData),
+            BlocBuilder<QrCodeBloc, QrCodeState>(
+              bloc: _qrCodeBloc,
+              builder: (context, state) {
+                if (state is QrCodeLoaded) {
+                  return Container(
+                    child: Image.memory(state.qrCode),
+                  );
+                } else {
+                  return const SizedBox(height: 80,);
+                }
+              },
+            ),
             const SizedBox(height: 50),
-            Container(
-              padding: const EdgeInsets.only(left: 25, right: 25),
-              child: TextField(
-                decoration: primary_field,
-                controller: qrdataFeed,
-                ),
-            ),
-            const SizedBox(height: 200),
-            Container(
-              width: 500,
-              decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(40)),
-              child: TextButton(
-                onPressed: () async {
-                  GetIt.I<AbstractQrCodeRepository>().qrData = qrdataFeed.text;
-                  _qrCodeBloc.add(QrCodeEvent());
-                    setState(() {});
-                  }, 
-                child: Text('Generate QR', style: TextStyle(color: Colors.white, fontSize: 18)), ),
-            ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 25, right: 25),
+                    child: TextField(
+                      decoration: primary_field,
+                      controller: qrdataFeed,
+                      ),
+                  ),
+                  const SizedBox(height: 200),
+                  Container(
+                    width: 500,
+                    decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(40)),
+                    child: TextButton(
+                      onPressed: () async {
+                        GetIt.I<AbstractQrCodeRepository>().qrData = qrdataFeed.text;
+                        _qrCodeBloc.add(QrCodeLoad());
+                          setState(() {});
+                        }, 
+                      child: Text('Generate QR', style: TextStyle(color: Colors.white, fontSize: 18)), ),
+                  ),
           ],
         ),
-          );
-        },
       ),
     );
   }

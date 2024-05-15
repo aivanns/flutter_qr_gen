@@ -1,5 +1,5 @@
 part of 'qr_generator_bloc.dart';
 
-class QrCodeEvent {}
+abstract class QrCodeEvent {}
 
 class QrCodeLoad extends QrCodeEvent {}
