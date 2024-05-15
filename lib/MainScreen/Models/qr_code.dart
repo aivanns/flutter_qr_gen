@@ -3,14 +3,14 @@ import 'dart:convert';
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class QrCode {
   const QrCode({
-    this.data,
+    required this.data,
     this.fill,
     this.backColor,
     this.boxSize,
     this.border,
   });
 
-  final String? data;
+  final String data;
   final String? fill;
   final String? backColor;
   final int? boxSize;

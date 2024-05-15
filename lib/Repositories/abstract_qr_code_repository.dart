@@ -1,8 +1,8 @@
-import '../MainScreen/Models/qr_code.dart';
+import 'dart:typed_data';
 
 abstract class AbstractQrCodeRepository {
 
-  late String qrData;
+  String qrData = '';
 
-  Future<QrCode> getQrCode();
+  Future<Uint8List> getQrCode();
 }

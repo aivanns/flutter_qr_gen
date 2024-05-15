@@ -1,6 +1,6 @@
 part of 'qr_generator_bloc.dart';
 
-class QrCodeState extends QrCodeBloc {}
+class QrCodeState {}
 
 class QrCodeInitial extends QrCodeState {}
 
