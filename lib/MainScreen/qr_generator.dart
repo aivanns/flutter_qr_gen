@@ -36,11 +36,22 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
         bloc: _qrCodeBloc,
         builder: (context, state) {
           return Container(
-            padding: const EdgeInsets.all(40),
+            padding: const EdgeInsets.only(left: 20, right: 20),
         child: Column(
           children: [
-            GetIt.I<AbstractQrCodeRepository>().qrData == '' && qrdataFeed.text.toString() == '' ? const SizedBox(height: 5,) :
-            Image.memory(QrCodeRepository(dio: Dio()).getQrCode()),
+            GetIt.I<AbstractQrCodeRepository>().qrData == '' && qrdataFeed.text.toString() == '' ? const SizedBox(height: 60) :
+            FutureBuilder(future: QrCodeRepository(dio: Dio()).getQrCode(),
+             builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: const CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else if (snapshot.hasData) {
+              return Image.memory(snapshot.data!);
+            } else {
+              return Text('No data');
+            }
+             }),
             //QrImageView(data: GetIt.I<AbstractQrCodeRepository>().qrData),
             const SizedBox(height: 50),
             Container(
