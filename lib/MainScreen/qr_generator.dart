@@ -38,9 +38,7 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
               bloc: _qrCodeBloc,
               builder: (context, state) {
                 if (state is QrCodeLoaded) {
-                  return Container(
-                    child: Image.memory(state.qrCode),
-                  );
+                  return Image.memory(state.qrCode);
                 } else if (state is QrCodeLoading) {
                   return const SizedBox(
                     height: 400,
@@ -68,7 +66,7 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
                         _qrCodeBloc.add(QrCodeLoad());
                           setState(() {});
                         }, 
-                      child: Text('Generate QR', style: TextStyle(color: Colors.white, fontSize: 18)), ),
+                      child: const Text('Generate QR', style: TextStyle(color: Colors.white, fontSize: 18)), ),
                   ),
           ],
         ),
