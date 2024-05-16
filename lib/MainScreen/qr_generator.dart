@@ -145,7 +145,7 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
             ),  
             SizedBox(height: 2.h,),
             Container(
-              padding: EdgeInsets.only(left: 8.w),
+              padding: EdgeInsets.only(left: 8.w, right: 8.w),
               child: Row(
                 children: [
                   Column(
