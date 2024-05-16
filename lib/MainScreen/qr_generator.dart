@@ -39,6 +39,7 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
               onColorChanged: (Color color) {
                 setState(() {
                   bgColor = color;
+                  GetIt.I<AbstractQrCodeRepository>().bgColor = colorToHex(bgColor);
                 });
               },
             ),
@@ -48,7 +49,6 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
               child: const Text('Готово'),
               onPressed: () {
                 Navigator.of(context).pop();
-                GetIt.I<AbstractQrCodeRepository>().bgColor = colorToHex(bgColor);
               },
             ),
           ],
@@ -69,6 +69,7 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
               onColorChanged: (Color color) {
                 setState(() {
                   qrColor = color;
+                  GetIt.I<AbstractQrCodeRepository>().qrColor = colorToHex(qrColor);
                 });
               },
             ),
@@ -78,7 +79,6 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
               child: const Text('Готово'),
               onPressed: () {
                 Navigator.of(context).pop();
-                GetIt.I<AbstractQrCodeRepository>().qrColor = colorToHex(qrColor);
               },
             ),
           ],
@@ -129,7 +129,10 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
                         ),
                       ],
                     ),
-                    child: Image.memory(state.qrCode)
+                    child: Container(
+                      padding: EdgeInsets.only(right: 5.w, left: 5.w, top: 2.h, bottom: 2.h),
+                      child: Image.memory(state.qrCode, fit: BoxFit.fill,)
+                      )
                     );
                 } else if (state is QrCodeLoading) {
                   return  SizedBox(
