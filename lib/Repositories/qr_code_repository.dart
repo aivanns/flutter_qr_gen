@@ -13,7 +13,10 @@ class QrCodeRepository extends AbstractQrCodeRepository {
     final response = await dio.post('http://5.42.220.228:8090/api/qrcode/generate',
     data: {
       'data' : qrData,
-      'box_size' : 30,
+      'fill' : qrColor,
+      'back_color': bgColor,
+      'box_size' : 8,
+      'border' : 2,
     },
     options: Options(responseType: ResponseType.bytes)
     );
