@@ -21,7 +21,6 @@ class QrCodeRepository extends AbstractQrCodeRepository {
     return Uint8List.fromList(response.data);
     }
     catch (e) {
-      print(e);
       return Uint8List.fromList(response.data);
     }
   }

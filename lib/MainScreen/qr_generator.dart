@@ -1,8 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_qr_gen/Repositories/abstract_qr_code_repository.dart';
-import 'package:flutter_qr_gen/Repositories/qr_code_repository.dart';
 import 'package:flutter_qr_gen/Styles/field_styles.dart';
 import 'package:get_it/get_it.dart';
 
@@ -43,8 +41,12 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
                   return Container(
                     child: Image.memory(state.qrCode),
                   );
+                } else if (state is QrCodeLoading) {
+                  return const SizedBox(
+                    height: 400,
+                    child: Center(child: CircularProgressIndicator()),);
                 } else {
-                  return const SizedBox(height: 80,);
+                  return const SizedBox(height: 400,);
                 }
               },
             ),
