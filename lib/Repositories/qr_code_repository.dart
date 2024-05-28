@@ -10,7 +10,7 @@ class QrCodeRepository extends AbstractQrCodeRepository {
 
   @override
   Future<Uint8List> getQrCode() async {
-    final response = await dio.post('http://192.168.218.155:8080/api/qrcode/generate',
+    final response = await dio.post('http://192.168.31.94:8080/api/qrcode/generate',
     data: {
       'data' : qrData,
       'fill' : qrColor,

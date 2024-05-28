@@ -113,6 +113,19 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
             BlocBuilder<QrCodeBloc, QrCodeState>(
               bloc: _qrCodeBloc,
               builder: (context, state) {
+                if (state is QrCodeLoadingFailure) {
+                  return SizedBox(
+                    height: 38.h,
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text('An error occured', style: TextStyle(color: Colors.black87, fontSize: 26)),
+                        Text('Please try again', style: TextStyle(color: Colors.black54, fontSize: 18)),
+                      ],
+                    )
+                  );
+                }
                 if (state is QrCodeLoaded) {
                   return Container(
                     height: 38.h,
@@ -134,23 +147,10 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
                       child: Image.memory(state.qrCode, fit: BoxFit.fill,)
                       )
                     );
-                } else if (state is QrCodeLoading) {
+                } if (state is QrCodeLoading) {
                   return  SizedBox(
                     height: 38.h,
                     child: const Center(child: CircularProgressIndicator()),);
-                }
-                if (state is QrCodeLoadingFailure) {
-                  return SizedBox(
-                    height: 38.h,
-                    child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text('An error occured', style: TextStyle(color: Colors.black87, fontSize: 26)),
-                        Text('Please try again', style: TextStyle(color: Colors.black54, fontSize: 18)),
-                      ],
-                    )
-                  );
                 } else {
                   return SizedBox(height: 38.h,);
                 }
@@ -234,17 +234,33 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
                       ),
                   ),
                   SizedBox(height: 3.h,),
-                  Container(
-                    width: 50.w,
-                    height: 7.h,
-                    decoration: BoxDecoration(color: const Color.fromARGB(255, 52, 58, 64), borderRadius: BorderRadius.circular(40)),
-                    child: TextButton(
-                      onPressed: () async {
-                        GetIt.I<AbstractQrCodeRepository>().qrData = qrdataFeed.text;
-                        _qrCodeBloc.add(QrCodeLoad());
-                          setState(() {});
-                        },
-                      child: const Text('Generate', style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w300)), ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 50.w,
+                        height: 7.h,
+                        decoration: BoxDecoration(color: const Color.fromARGB(255, 52, 58, 64), borderRadius: BorderRadius.circular(40)),
+                        child: TextButton(
+                          onPressed: () async {
+                            GetIt.I<AbstractQrCodeRepository>().qrData = qrdataFeed.text;
+                            _qrCodeBloc.add(QrCodeLoad());
+                              setState(() {});
+                            },
+                          child: const Text('Generate', style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w300)), ),
+                      ),
+                      SizedBox(width: 5.w,),
+                      Container(
+                        width: 16.w,
+                        height: 7.h,
+                        decoration: BoxDecoration(color: const Color.fromARGB(255, 52, 58, 64), borderRadius: BorderRadius.circular(10)),
+                        child: TextButton(
+                          onPressed: () async {
+                            Navigator.pushNamed(context, '/QrScanner');
+                            },
+                          child: const Icon(Icons.camera_enhance, color: Colors.white,) ),
+                      ),
+                    ],
                   ),
           ],
         ),
