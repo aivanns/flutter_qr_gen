@@ -129,12 +129,28 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
                         ),
                       ],
                     ),
-                    child: Image.memory(state.qrCode)
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 2.h, horizontal: 4.w),
+                      child: Image.memory(state.qrCode, fit: BoxFit.fill,)
+                      )
                     );
                 } else if (state is QrCodeLoading) {
                   return  SizedBox(
                     height: 38.h,
                     child: const Center(child: CircularProgressIndicator()),);
+                }
+                if (state is QrCodeLoadingFailure) {
+                  return SizedBox(
+                    height: 38.h,
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text('An error occured', style: TextStyle(color: Colors.black87, fontSize: 26)),
+                        Text('Please try again', style: TextStyle(color: Colors.black54, fontSize: 18)),
+                      ],
+                    )
+                  );
                 } else {
                   return SizedBox(height: 38.h,);
                 }
