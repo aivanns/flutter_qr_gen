@@ -17,8 +17,6 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
-  // In order to get hot reload to work we need to pause the camera if the platform
-  // is android, or resume the camera if the platform is iOS.
   @override
   void reassemble() {
     super.reassemble();
@@ -42,9 +40,30 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   if (result != null)
-                    Text(
-                        // ignore: deprecated_member_use
-                        'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
+                    ElevatedButton(
+                      child: const Text('QR Data'),
+                      onPressed: () {
+                        showDialog(
+                      context: context,
+                      builder: (context) {
+                        if (result!.code != null){
+                        return AlertDialog(
+                          title: const Text('QR Scanner'),
+                          content: Text(result!.code.toString()),
+                          actions: <Widget>[
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop(false); // dismisses only the dialog and returns false
+                              },
+                              child: const Text('Ok'),
+                            ),
+                          ],
+                        );} else {
+                          return const SizedBox();
+                        }
+                      }, 
+                    );})
                   else
                     const Text('Scan a code'),
                   Row(
@@ -77,6 +96,7 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
                               builder: (context, snapshot) {
                                 if (snapshot.data != null) {
                                   return Text(
+                                      // ignore: deprecated_member_use
                                       'Camera facing ${describeEnum(snapshot.data!)}');
                                 } else {
                                   return const Text('loading');

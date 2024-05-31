@@ -2,7 +2,6 @@
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_qr_gen/Repositories/abstract_qr_code_repository.dart';
 
 part 'qr_generator_events.dart';
